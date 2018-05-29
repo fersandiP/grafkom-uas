@@ -1,14 +1,18 @@
 "use strict";
 const m4 = twgl.m4;
 var gl, programInfo, bufferInfo;
-var uniforms = {
+var uniforms = {}
 
-}
+var cameraPosition = [0, 0, -10]
 
 var arrays = {
     position: [1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1],
     normal: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1],
     indices: [0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23]
+}
+
+var settings = {
+    speed: 0.5
 }
 
 window.onload = function () {
@@ -40,8 +44,8 @@ function render(time) {
     const zFar = 100;
     const projection = m4.perspective(fov, aspect, zNear, zFar);
 
-    const eye = [1, 4, -10];
-    const target = [0, 0, 0];
+    const eye = cameraPosition;
+    const target = [cameraPosition[0], 0, cameraPosition[2]+10];
     const up = [0, 1, 0];
     const camera = m4.lookAt(eye, target, up);
     const view = m4.inverse(camera)
@@ -60,4 +64,21 @@ function render(time) {
     gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 
     requestAnimationFrame(render);
+}
+
+window.onkeydown = function(event) {
+    switch(event.keyCode) {
+        case 65:
+            cameraPosition[0]+=settings.speed;
+            break;
+        case 68:
+            cameraPosition[0]-=settings.speed;
+            break;
+        case 87:
+            cameraPosition[2]+=settings.speed;
+            break;
+        case 83:
+            cameraPosition[2]-=settings.speed;
+            break;
+    }
 }
