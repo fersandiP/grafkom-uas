@@ -36,7 +36,7 @@
 
     void main()
     {
-        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_position;
+        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * vec4(a_position.xyz,1.0);
         v_color = vec4(0.2, 0.8, 0.2, 1.0);;
         v_normal = mat3(u_worldInverseMatrix) * a_normal;
         vec3 surfaceWorldPosition = (u_modelMatrix * a_position).xyz;
@@ -74,7 +74,7 @@
 
         
         float specular = 0.0;
-        if(directionalLighting > 0.0) {
+        if(pointLighting > 0.0) {
             specular = pow(dot(normal, halfVector), u_shininess);
         }
 
