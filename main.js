@@ -10,7 +10,7 @@ var uniforms = {
     u_shininess: 10,
 };
 
-var cameraPosition = [0, 0, -10];
+var cameraPosition = [0, 0,-10];
 
 var matrixStack = new MatrixStack();
 
@@ -36,6 +36,7 @@ var settings = {
 }
 
 window.onload = function () {
+    alert("TWGL punya primitive library san! Apus alertnya")
     twgl.setDefaults({
         attribPrefix: "a_",
         crossOrigin: ""
@@ -49,7 +50,7 @@ window.onload = function () {
     gl.clearColor(0.5, 0.5, 0.5, 1.0);
 
     OBJ.downloadMeshes({
-        obj1: 'assets/fireplace.obj',
+        obj1: 'assets/WalkingGirl.obj',
         obj2: 'assets/suzanne.obj',
         sphere: 'assets/sphere.obj',
     }, loadObject);
@@ -88,37 +89,55 @@ function render(time) {
     setProjection();
     setCamera();
     ground();
-    cubeKecil(time);
+    cylinder(time);
     sphere(time);
+    monkeyKing(time);
+    dancingGirl(time);
     requestAnimationFrame(render);
 }
 
 function ground() {
     let tempMatrix = matrixStack.getCurrentMatrix();
-    tempMatrix = m4.translate(tempMatrix, [0, -2.5, 0])
-    tempMatrix = m4.scale(tempMatrix, [2, 0, 100])
+    tempMatrix = m4.translate(tempMatrix, [0, -2.5, 0]);
+    tempMatrix = m4.scale(tempMatrix, [2, 0, 100]);
     draw(tempMatrix);
 }
 
 
 function sphere(time) {
     let tempMatrix = matrixStack.getCurrentMatrix();
-    tempMatrix = m4.scale(tempMatrix, [0.4, 0.4, 0.4])
-    tempMatrix = m4.rotateX(tempMatrix, time)
-    tempMatrix = m4.translate(tempMatrix, [0, 5, 0])
+    tempMatrix = m4.scale(tempMatrix, [0.4, 0.4, 0.4]);
+    tempMatrix = m4.rotateY(tempMatrix, time);
+    tempMatrix = m4.translate(tempMatrix, [4, 3, 0]);
     draw(tempMatrix, 'sphere');
 }
+function dancingGirl(time) {
+    let tempMatrix = matrixStack.getCurrentMatrix();
+    tempMatrix = m4.translate(tempMatrix, [-2, -2.5, 0]);
+    tempMatrix = m4.rotateY(tempMatrix, radians(90));
+    draw(tempMatrix, 'obj1');
+}
 
-function cubeKecil(time) {
+function monkeyKing(time) {
+    let tempMatrix = matrixStack.getCurrentMatrix();
+    tempMatrix = m4.scale(tempMatrix, [0.4, 0.4, 0.4]);
+    tempMatrix = m4.translate(tempMatrix, [4, 0, 0]);
+    tempMatrix = m4.rotateY(tempMatrix, time);
+    draw(tempMatrix, 'obj2');
+}
+
+function cylinder(time) {
     let tempMatrix = matrixStack.getCurrentMatrix();
     tempMatrix = m4.scale(tempMatrix, [0.5, 0.5, 0.5]);
     tempMatrix = m4.translate(tempMatrix, [0, 0, 0]);
     tempMatrix = m4.rotateY(tempMatrix, time);
-    draw(tempMatrix);
+    draw(tempMatrix, null ,twgl.primitives.createCylinderBufferInfo(gl, 0.5, 2, 15, 15));
 }
 
-function draw(matrix, objName = 'cube') {
-    bufferInfo = twgl.createBufferInfoFromArrays(gl, obj[objName]);
+function draw(matrix, objName = 'cube', bufferInfo = null) {
+    if (!bufferInfo) {
+        bufferInfo = twgl.createBufferInfoFromArrays(gl, obj[objName]);
+    }
     uniforms.u_modelMatrix = matrix;
     uniforms.u_worldInverseMatrix = m4.transpose(m4.inverse(matrix));
 
