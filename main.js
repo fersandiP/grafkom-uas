@@ -1,7 +1,10 @@
 "use strict";
 const m4 = twgl.m4;
 var gl, programInfo, bufferInfo;
-var uniforms = {}
+var uniforms = {
+    u_lightDirection : [0.0, 0.5, -0.5],
+    u_lightPosition: [0.3, 0.5, -2]
+}
 
 var cameraPosition = [0, 0, -10]
 
@@ -40,8 +43,8 @@ function render(time) {
 
     const fov = 30 * Math.PI / 180;
     const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    const zNear = 0.5;
-    const zFar = 100;
+    const zNear = 1;
+    const zFar = 2000;
     const projection = m4.perspective(fov, aspect, zNear, zFar);
 
     const eye = cameraPosition;
@@ -54,8 +57,10 @@ function render(time) {
 
 
     uniforms.u_projectionMatrix = projection;
-    uniforms.u_modelViewMatrix = m4.multiply(view, model);
+    uniforms.u_modelMatrix = model;
+    uniforms.u_viewMatrix = view;
     uniforms.u_normalMatrix = camera;
+    uniforms.u_worldInverseMatrix = m4.transpose(m4.inverse(model));
 
 
     gl.useProgram(programInfo.program);
