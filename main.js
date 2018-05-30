@@ -3,7 +3,8 @@ const m4 = twgl.m4;
 var gl, programInfo, bufferInfo;
 var uniforms = {
     u_lightDirection : [0.0, 0.5, -0.5],
-    u_lightPosition: [0.3, 0.5, -2]
+    u_lightPosition: [0.5, 0.5, -2],
+    u_shininess : 10,
 }
 
 var cameraPosition = [0, 0, -10]
@@ -59,8 +60,8 @@ function render(time) {
     uniforms.u_projectionMatrix = projection;
     uniforms.u_modelMatrix = model;
     uniforms.u_viewMatrix = view;
-    uniforms.u_normalMatrix = camera;
     uniforms.u_worldInverseMatrix = m4.transpose(m4.inverse(model));
+    uniforms.u_cameraPosition = cameraPosition;
 
 
     gl.useProgram(programInfo.program);

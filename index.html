@@ -23,14 +23,15 @@
     varying vec4 v_color;
     varying vec3 v_normal;
     varying vec3 v_surfaceToLight;
+    varying vec3 v_surfaceToCamera;
 
     uniform mat4 u_modelMatrix;
     uniform mat4 u_viewMatrix;
     uniform mat4 u_projectionMatrix;
-    uniform mat4 u_normalMatrix;
     uniform mat4 u_worldInverseMatrix;
 
     uniform vec3 u_lightPosition;
+    uniform vec3 u_cameraPosition;
 
     void main()
     {
@@ -39,6 +40,7 @@
         v_normal = mat3(u_worldInverseMatrix) * a_normal;
         vec3 surfaceWorldPosition = (u_modelMatrix * a_position).xyz;
         v_surfaceToLight = u_lightPosition - surfaceWorldPosition;
+        v_surfaceToCamera = u_cameraPosition - surfaceWorldPosition;
     }
     </script>
 
@@ -49,19 +51,35 @@
     varying vec4 v_color;
     varying vec3 v_normal;
     varying vec3 v_surfaceToLight;
+    varying vec3 v_surfaceToCamera;
 
     uniform vec3 u_lightDirection;
+
+    uniform float u_shininess;
 
     void main()
     {
         gl_FragColor = v_color;
 
         vec3 normal = normalize(v_normal);
+        vec3 surfaceToLight = normalize(v_surfaceToLight);
+        vec3 lightDirection = normalize(u_lightDirection);
+        vec3 surfaceToCamera = normalize(v_surfaceToCamera);
 
-        float pointLighting = dot(normal, normalize(v_surfaceToLight));
-        float directionalLighting = dot(normal, normalize(u_lightDirection));
+        vec3 halfVector = normalize(surfaceToLight + surfaceToCamera);
+
+        float pointLighting = dot(normal, surfaceToLight);
+        float directionalLighting = dot(normal, lightDirection);
+
+        
+        float specular = 0.0;
+        if(directionalLighting > 0.0) {
+            specular = pow(dot(normal, halfVector), u_shininess);
+        }
+
         gl_FragColor.rgb *= pointLighting;
         gl_FragColor.rgb *= directionalLighting;
+        gl_FragColor.rgb += specular;
     }
     </script>
     <script type="text/javascript" src="vendor/twgl-full.min.js"></script>
