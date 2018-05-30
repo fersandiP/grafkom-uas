@@ -1,14 +1,18 @@
  "use strict";
  const m4 = twgl.m4;
+ const vec3 = twgl.vec3;
+
  var gl, programInfo, bufferInfo;
 
  var uniforms = {
     u_lightDirection : [0.0, 0.5, -0.5],
-    u_lightPosition: [0.5, 0.5, -2],
+    u_lightPosition: [0.5, 0.5, -5],
     u_shininess : 10,
-}
+};
 
-var cameraPosition = [0, 0, -10] 
+var cameraPosition = [0, 0, -10];
+
+var matrixStack = new MatrixStack();
 
 var obj = {
     cube : {
@@ -34,6 +38,19 @@ window.onload = function () {
     gl = document.getElementById("gl-canvas").getContext("webgl");
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
 
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    gl.clearColor(0.5, 0.5, 0.5, 1.0);
+
+    const fov = 30 * Math.PI / 180;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const zNear = 1;
+    const zFar = 2000;
+    const projection = m4.perspective(fov, aspect, zNear, zFar);
+
+    uniforms.u_projectionMatrix = projection;
+
+
     OBJ.downloadMeshes({
         obj1 : 'assets/fireplace.obj',
         obj2 : 'assets/suzanne.obj'
@@ -43,11 +60,6 @@ window.onload = function () {
 
 function main() {
     requestAnimationFrame(render);
-}
-
-
-function setObject(array) {
-    bufferInfo = twgl.createBufferInfoFromArrays(gl, array);
 }
 
 function loadObject(meshes){
@@ -67,43 +79,55 @@ function loadObject(meshes){
 function render(time) {
     time *= 0.001;
     twgl.resizeCanvasToDisplaySize(gl.canvas);
+
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
-    gl.clearColor(0.5, 0.5, 0.5, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-
-    const fov = 30 * Math.PI / 180;
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    const zNear = 1;
-    const zFar = 2000;
-    const projection = m4.perspective(fov, aspect, zNear, zFar);
-
-    const eye = cameraPosition;
-    const target = [cameraPosition[0], 0, cameraPosition[2]+10];
-    const up = [0, 1, 0];
-    const camera = m4.lookAt(eye, target, up);
-    const view = m4.inverse(camera)
+    setCamera();
     
-    const model = m4.rotationY(time);
+    cubeKecil(time);
+    requestAnimationFrame(render);
+}
 
+function cubeKecil(time){
+    let tempMatrix = matrixStack.getCurrentMatrix();
+    tempMatrix = m4.scale(tempMatrix, [1, 2, 1]);
+    tempMatrix = m4.rotateY(tempMatrix, time);
+    // tempMatrix = m4.translate(tempMatrix, [0,0,0]);
 
-    uniforms.u_projectionMatrix = projection;
-    uniforms.u_modelMatrix = model;
-    uniforms.u_viewMatrix = view;
-    uniforms.u_worldInverseMatrix = m4.transpose(m4.inverse(model));
-    uniforms.u_cameraPosition = cameraPosition;
+    matrixStack.save(tempMatrix);
 
-    setObject(obj.cube);
+    draw(tempMatrix);
+
+    matrixStack.restore();
+}
+
+function draw(matrix, objName='cube'){
+    bufferInfo = twgl.createBufferInfoFromArrays(gl, obj[objName]);
+    console.log(obj[objName]);
+    console.log(matrix);
+
+    uniforms.u_modelMatrix = matrix;
+    uniforms.u_worldInverseMatrix = m4.transpose(m4.inverse(matrix));
+
     gl.useProgram(programInfo.program);
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
 
     gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+}
 
-    requestAnimationFrame(render);
+function setCamera(){
+    const eye = cameraPosition;
+    const target = [cameraPosition[0], 0, cameraPosition[2]+10];
+    const up = [0, 1, 0];
+    const camera = m4.lookAt(eye, target, up);
+    const view = m4.inverse(camera);
+    
+    uniforms.u_viewMatrix = view;
+    uniforms.u_cameraPosition = cameraPosition;
+
 }
 
 window.onkeydown = function(event) {
@@ -121,4 +145,8 @@ window.onkeydown = function(event) {
         cameraPosition[2]-=settings.speed;
         break;
     }
+}
+
+function radians( degrees ) {
+    return degrees * Math.PI / 180.0;
 }

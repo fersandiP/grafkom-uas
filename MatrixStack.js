@@ -9,19 +9,15 @@ class MatrixStack {
 		this.stack.pop();
 	  // Never let the stack be totally empty
 	  if (this.stack.length < 1) {
-	  	this.stack[0] = mat4(1);
+	  	this.stack[0] = m4.identity();
 	  }
 	}
 
-	save () {
-		this.stack.push(this.getCurrentMatrix());
+	save (m) {
+		this.stack.push(m);
 	}
 
 	getCurrentMatrix () {
 		return this.stack[this.stack.length - 1].slice();
-	}
-	
-	setCurrentMatrix (m) {
-		return this.stack[this.stack.length - 1] = m;
 	}
 }
