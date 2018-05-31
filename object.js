@@ -409,7 +409,7 @@ var spinner = {
 		rotationY() {
 			return parameter.spinner.rotation;
 		},
-		translation: [0, 0, 10],
+		translation: [0, -1, 10],
 		scale: [0.025, 0.025, 0.025],
 		objName: 'sphere',
 		function: ROTATION_Y,
