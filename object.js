@@ -1,5 +1,7 @@
-const ROTATION = 0b1;
-const TRANSLATE = 0b10;
+const ROTATION_X = 0b1;
+const ROTATION_Y = 0b10;
+const ROTATION_Z = 0b100
+const TRANSLATE = 0b1000;
 
 var parameter = {
 	robot: {
@@ -14,7 +16,7 @@ var robot = {
 		},
 		translation: [-5, -2, 12],
 		scale: [0.5, 0.7, 0.5],
-		function: ROTATION,
+		function: ROTATION_Y,
 		objName:'cylinder',
 	},
 	head: {
@@ -118,7 +120,7 @@ var world = {
 	ground: {
 		rotationY: 0,
 		translation: [0, -3, 2],
-		scale: [4, 0.1, 2000],
+		scale: [4, 0.01, 2000],
 		color: [0.1, 0.1, 0.1]
 	},
 	wall: {

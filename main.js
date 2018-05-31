@@ -119,15 +119,22 @@ function defineModelViewMatrix(object, saveMatrix = false) {
     let tempMatrix = matrixStack.getCurrentMatrix();
 
     let translate = object.translation;
-    let rotation = object.rotationY;
+    let rotationY = (object.rotationY == null) ? 0 : object.rotationY;
+    let rotationX = (object.rotationX == null) ? 0 : object.rotationX;
+    let rotationZ = (object.rotationZ == null) ? 0 : object.rotationZ;
 
     if (object.function != null) {
-        if ((object.function & ROTATION) != 0) rotation = rotation();
+        if ((object.function & ROTATION_X) != 0) rotationX = rotationX();
+        if ((object.function & ROTATION_Y) != 0) rotationY = rotationY();
+        if ((object.function & ROTATION_Z) != 0) rotationZ = rotationZ();
+
         if ((object.function & TRANSLATE) != 0) translate = translate();
     }
 
     tempMatrix = m4.multiply(tempMatrix, m4.translation(translate));
-    tempMatrix = m4.multiply(tempMatrix, m4.rotationY(radians(rotation)));
+    tempMatrix = m4.multiply(tempMatrix, m4.rotationX(radians(rotationX)))
+    tempMatrix = m4.multiply(tempMatrix, m4.rotationY(radians(rotationY)));
+    tempMatrix = m4.multiply(tempMatrix, m4.rotationZ(radians(rotationZ)));
     tempMatrix = m4.multiply(tempMatrix, m4.scaling(object.scale));
     if (object.color != null) {
         uniforms.u_color = object.color;
