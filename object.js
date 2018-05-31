@@ -121,3 +121,16 @@ var ground = {
 		hasChild: false,
 	}]
 }
+
+var suzanne = {
+	suzanne: {
+		rotationY: 180,
+		translation: [3, -2, 20],
+		scale: [1, 1, 1],
+		objName: 'suzanne'
+	},
+	hierarchy: [{
+		name: 'suzanne',
+		hasChild: false,
+	}]
+}

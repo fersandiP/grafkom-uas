@@ -42,7 +42,7 @@ window.onload = function () {
 
 
     OBJ.downloadMeshes({
-        obj1: 'assets/fireplace.obj',
+        obj1: 'assets/WalkingGirl.obj',
         obj2: 'assets/suzanne.obj'
     }, loadObject);
 
@@ -77,6 +77,7 @@ function render() {
     updateParameter();
     setProjection();
     setCamera();
+    drawObject(suzanne);
     drawObject(ground);
     drawObject(robot);
     requestAnimationFrame(render);
@@ -139,10 +140,10 @@ function draw(matrix, objName = 'cube', ) {
 
 function chooseShape(objName) {
     switch (objName) {
-        case 'obj1':
-            return twgl.primitives.createBufferInfoFromArrays(gl, obj['obj1']);
-        case 'obj2':
-            return twgl.primitives.createBufferInfoFromArrays(gl, obj['obj2']);
+        case 'WalkingGirl':
+            return twgl.createBufferInfoFromArrays(gl, obj['obj1']);
+        case 'suzanne':
+            return twgl.createBufferInfoFromArrays(gl, obj['obj2']);
         case 'cylinder':
             return twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 10, 10);
         case 'sphere':
