@@ -8,6 +8,7 @@ var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0.5, 0.5, -5],
     u_shininess: 20,
+    u_color:[0.2, 0.8, 0.2]
 };
 
 var cameraPosition = [0, 0, -10];
@@ -42,7 +43,7 @@ window.onload = function () {
 
 
     OBJ.downloadMeshes({
-        obj1: 'assets/fireplace.obj',
+        obj1: 'assets/WalkingGirl.obj',
         obj2: 'assets/suzanne.obj'
     }, loadObject);
 
@@ -77,7 +78,8 @@ function render() {
     updateParameter();
     setProjection();
     setCamera();
-    drawObject(world);
+    drawObject(suzanne);
+    drawObject(ground);
     drawObject(robot);
     requestAnimationFrame(render);
 }
@@ -139,10 +141,10 @@ function draw(matrix, objName = 'cube', ) {
 
 function chooseShape(objName) {
     switch (objName) {
-        case 'obj1':
-            return twgl.primitives.createBufferInfoFromArrays(gl, obj['obj1']);
-        case 'obj2':
-            return twgl.primitives.createBufferInfoFromArrays(gl, obj['obj2']);
+        case 'WalkingGirl':
+            return twgl.createBufferInfoFromArrays(gl, obj['obj1']);
+        case 'suzanne':
+            return twgl.createBufferInfoFromArrays(gl, obj['obj2']);
         case 'cylinder':
             return twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 10, 10);
         case 'sphere':
