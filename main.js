@@ -297,8 +297,20 @@ window.onkeydown = function (event) {
         case 40: //down
             cameraAngelX -= 1;
             break;
-        case 81://q
+        case 81: //q
             drawingMethod ^= 1;
+            break;
+        case 188: //,
+            parameter.suzanne.translation[0] += 1;
+            break;
+        case 190: //.
+            parameter.suzanne.translation[0] -= 1;
+            break;
+        case 90: //z
+            parameter.robot.bodyTranslation[0] += 1;
+            break;
+        case 88: //x
+            parameter.robot.bodyTranslation[0] -= 1;
             break;
     }
 }
