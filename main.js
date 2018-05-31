@@ -53,8 +53,10 @@ window.onload = function () {
 
 
     OBJ.downloadMeshes({
-        obj1: 'assets/WalkingGirl.obj',
+        obj1: 'assets/WalkingGirl.obj', 
+        //source: //https://github.com/tado/CC4p52b6/blob/master/src/myAssets/Models/WalkingGirl/WalkingGirl.obj
         obj2: 'assets/suzanne.obj'
+        //source: webgl-obj-loader
     }, loadObject);
 
 }
@@ -89,13 +91,16 @@ function render() {
     setProjection();
     setCamera();
     drawObject(suzanne);
+    drawObject(spinner);
     drawObject(world);
     drawObject(robot);
+    drawObject(walkingGirl);
     requestAnimationFrame(render);
 }
 
 function updateParameter() {
     parameter.robot.bodyRotationY += 1;
+    parameter.spinner.rotation += 1;
 }
 
 function drawObject(object) {
@@ -178,6 +183,8 @@ function chooseShape(objName) {
             return twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 10, 10);
         case 'sphere':
             return twgl.primitives.createSphereBufferInfo(gl, 1, 20, 20);
+        case 'torus':
+            return twgl.primitives.createTorusBufferInfo(gl, 1, 0.35, 50, 50);
         default:
             return twgl.createBufferInfoFromArrays(gl, obj['cube']);
     }

@@ -6,6 +6,9 @@ const TRANSLATE = 0b1000;
 var parameter = {
 	robot: {
 		bodyRotationY: 0
+	},
+	spinner: {
+		rotation: 0
 	}
 };
 
@@ -151,7 +154,7 @@ var suzanne = {
 		rotationY: 0,
 		translation: [5, 0, 20],
 		scale: [1, 2, 1],
-		objName: 'cylinder'
+		objName: 'cube'
 	},
 	hand1: {
 		rotationY: 0,
@@ -202,5 +205,81 @@ var suzanne = {
 				hasChild: false
 			},
 		]
+	}]
+}
+
+
+var test = {
+	test: {
+		rotationY: 0,
+		rotationX: 90,
+		translation: [0, 0, 0],
+		scale: [1, 1, 1],
+		objName: 'torus'
+	},
+	hierarchy: [{
+		name: 'test',
+		hasChild: false,
+	}]
+}
+
+var spinner = {
+	ring1: {
+		translation: [-10, 0, -10],
+		scale: [10, 10, 10],
+		objName: 'torus'
+	},
+	ring2: {
+		translation: [10, 0, -10],
+		scale: [10, 10, 10],
+		objName: 'torus',
+	},
+	ring3: {
+		translation: [0, 0, 10],
+		scale: [10, 10, 10],
+		objName: 'torus',
+	},
+	mid: {
+		rotationX: 90,
+		rotationY() {
+			return parameter.spinner.rotation;
+		},
+		translation: [0, 0, 0],
+		scale: [0.025, 0.025, 0.025],
+		objName: 'sphere',
+		function: ROTATION_Y,
+	},
+	hierarchy: [{
+		name: 'mid',
+		hasChild: true,
+		childs: [
+			{
+				name: 'ring1',
+				hasChild: false,
+			},
+			{
+				name: 'ring2',
+				hasChild: false,
+			},
+			{
+				name: 'ring3',
+				hasChild: false,
+			},
+		]
+	}]
+}
+
+
+var walkingGirl = {
+	walkingGirl: {
+		rotationY: 0,
+		translation: [0, -2, -5],
+		scale: [1, 1, 1],
+		objName: 'WalkingGirl',
+		color: [1, 0, 0]
+	},
+	hierarchy: [{
+		name: 'walkingGirl',
+		hasChild: false,
 	}]
 }
