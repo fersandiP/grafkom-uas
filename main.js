@@ -44,7 +44,7 @@ window.onload = function () {
     gl = document.getElementById("gl-canvas").getContext("webgl");
     textures = twgl.createTextures(gl, {
         wall: {
-            src:'textures/wall.gif'
+            src: 'textures/wall.gif',
         }
     });
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
@@ -67,12 +67,12 @@ function loadObject(meshes) {
     obj.obj1.indices = meshes.obj1.indices;
     obj.obj1.position = meshes.obj1.vertices;
     obj.obj1.normal = meshes.obj1.vertexNormals;
-    obj.obj1.texcoord  = meshes.obj1.vertices.slice(0,meshes.obj1.vertices.length/3*2)
+    obj.obj1.texcoord = meshes.obj1.vertices.slice(0, meshes.obj1.vertices.length / 3 * 2)
 
     obj.obj2.indices = meshes.obj2.indices;
     obj.obj2.position = meshes.obj2.vertices;
     obj.obj2.normal = meshes.obj2.vertexNormals;
-    obj.obj2.texcoord  = meshes.obj2.vertices.slice(0,meshes.obj2.vertices.length/3*2)
+    obj.obj2.texcoord = meshes.obj2.vertices.slice(0, meshes.obj2.vertices.length / 3 * 2)
 
     main();
 }
@@ -141,7 +141,7 @@ function defineModelViewMatrix(object, saveMatrix = false) {
     } else {
         uniforms.u_color = DEFAULT_COLOR;
     }
-    
+
     if (object.texture != null) {
         uniforms.u_isTexture = 1;
         uniforms.u_texture = textures[object.texture];

@@ -17,7 +17,7 @@ var robot = {
 		translation: [-5, -2, 12],
 		scale: [0.5, 0.7, 0.5],
 		function: ROTATION_Y,
-		objName:'cylinder',
+		objName: 'cylinder',
 	},
 	head: {
 		rotationY: 0,
@@ -46,10 +46,10 @@ var robot = {
 		translation: [0.5, 0.5, 1],
 		scale: [0.1, 0.1, 0.1]
 	},
-	mouth : {
-		rotationY : 0,
-		translation : [0,-0.5,1],
-		scale : [0.5, 0.1, 0.1]
+	mouth: {
+		rotationY: 0,
+		translation: [0, -0.5, 1],
+		scale: [0.5, 0.1, 0.1]
 	},
 	nose: {
 		rotationY: 0,
@@ -90,8 +90,8 @@ var robot = {
 						hasChild: false
 					},
 					{
-						name : 'mouth',
-						hasChild : false
+						name: 'mouth',
+						hasChild: false
 					}
 				]
 			},
@@ -125,8 +125,8 @@ var world = {
 	},
 	wall: {
 		rotationY: 0,
-		translation: [0,0,1989],
-		scale : [2000, 2000, 0.1],
+		translation: [0, 0, 1989],
+		scale: [2000, 2000, 0.1],
 		color: [0.2, 0.2, 0.2],
 		texture: 'wall',
 	},
@@ -141,14 +141,66 @@ var world = {
 }
 
 var suzanne = {
-	suzanne: {
+	head: {
 		rotationY: 180,
-		translation: [3, -2, 20],
-		scale: [1, 1, 1],
+		translation: [0, 1.7, 0],
+		scale: [2, 1, 2.5],
 		objName: 'suzanne'
 	},
+	body: {
+		rotationY: 0,
+		translation: [5, 0, 20],
+		scale: [1, 2, 1],
+		objName: 'cylinder'
+	},
+	hand1: {
+		rotationY: 0,
+		translation: [2, 0.5, 0],
+		scale: [1, 0.2, 1],
+		objName: 'sphere'
+	},
+	hand2: {
+		rotationY: 0,
+		translation: [-2, 0.5, 0],
+		scale: [1, 0.2, 1],
+		objName: 'sphere'
+	},
+	leg1: {
+		rotationY: 0,
+		translation: [-0.7, -1.5, 0],
+		scale: [0.3, 0.5, 0.3],
+		objName: 'sphere'
+	},
+	leg2: {
+		rotationY: 0,
+		translation: [0.7, -1.5, 0],
+		scale: [0.3, 0.5, 0.3],
+		objName: 'sphere'
+	},
 	hierarchy: [{
-		name: 'suzanne',
-		hasChild: false,
+		name: 'body',
+		hasChild: true,
+		childs: [
+			{
+				name: 'head',
+				hasChild: false,
+			},
+			{
+				name: 'hand1',
+				hasChild: false
+			},
+			{
+				name: 'hand2',
+				hasChild: false
+			},
+			{
+				name: 'leg1',
+				hasChild: false
+			},
+			{
+				name: 'leg2',
+				hasChild: false
+			},
+		]
 	}]
 }
