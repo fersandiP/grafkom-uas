@@ -5,14 +5,17 @@ const vec3 = twgl.vec3;
 var gl, programInfo, bufferInfo;
 
 const DEFAULT_COLOR = [0.2, 0.8, 0.2];
-const GLOBAL_CAMERA = [0, 0, -15];
+const GLOBAL_CAMERA = [0, 0, -20];
 var povCamera = [0, -2, -5];
+var spotLightTarget = [0, 0, 0];
 
 var textures;
 var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
-    u_lightPosition: [0.5, 0.5, -5],
-    u_shininess: 20,
+    u_lightPosition: [0, 0, -10],
+    u_spotLightPosition: [0, 0, -30],
+    u_spotLightLimit: Math.cos(radians(10)),
+    u_shininess: 10,
     u_color: DEFAULT_COLOR,
     u_isTexture: 0,
 };
@@ -57,7 +60,7 @@ window.onload = function () {
 
 
     OBJ.downloadMeshes({
-        obj1: 'assets/WalkingGirl.obj', 
+        obj1: 'assets/WalkingGirl.obj',
         //source: //https://github.com/tado/CC4p52b6/blob/master/src/myAssets/Models/WalkingGirl/WalkingGirl.obj
         obj2: 'assets/suzanne.obj'
         //source: webgl-obj-loader
@@ -93,7 +96,7 @@ function render() {
 
     updateParameter();
     setProjection();
-    setCamera();
+    setCameraAndSpotLight();
     drawObject(suzanne);
     drawObject(spinner);
     drawObject(world);
@@ -104,7 +107,7 @@ function render() {
 
 function updateParameter() {
     if (robotAction.current_state == robotState.S_Z_MAJU ||
-        robotAction.current_state == robotState.S_Z_MUNDUR){
+        robotAction.current_state == robotState.S_Z_MUNDUR) {
         parameter.robot.bodyTranslation = robotAction.action(parameter.robot.bodyTranslation);
     } else {
         parameter.robot.bodyRotationY = robotAction.action(parameter.robot.bodyRotationY)
@@ -199,8 +202,8 @@ function chooseShape(objName) {
     }
 }
 
-function setCamera() {
-    if(isPov) {
+function setCameraAndSpotLight() {
+    if (isPov) {
         cameraPosition = povCamera;
     } else {
         cameraPosition = GLOBAL_CAMERA;
@@ -213,6 +216,7 @@ function setCamera() {
 
     uniforms.u_viewMatrix = view;
     uniforms.u_cameraPosition = cameraPosition;
+    uniforms.u_spotLightDirection = [-camera[8], -camera[9], -camera[10]];
 
 }
 
@@ -231,22 +235,24 @@ window.onkeydown = function (event) {
     switch (event.keyCode) {
         case 65://a
             povCamera[0] += settings.speed;
-            parameter.walkingGirl.translateX+=settings.speed;
+            parameter.walkingGirl.translateX += settings.speed;
             break;
         case 68://d
             povCamera[0] -= settings.speed;
-            parameter.walkingGirl.translateX-=settings.speed;
+            parameter.walkingGirl.translateX -= settings.speed;
             break;
         case 87://w
             povCamera[2] += settings.speed;
-            parameter.walkingGirl.translateZ+=settings.speed;
+            parameter.walkingGirl.translateZ += settings.speed;
             break;
         case 83://s
             povCamera[2] -= settings.speed;
-            parameter.walkingGirl.translateZ-=settings.speed;
+            parameter.walkingGirl.translateZ -= settings.speed;
             break;
         case 32://space
-            isPov^=true;
+            isPov ^= true;
+            break;
+        case 32:
             break;
     }
 }
@@ -255,8 +261,8 @@ function radians(degrees) {
     return degrees * Math.PI / 180.0;
 }
 
-function sumVector(v1, v2){
+function sumVector(v1, v2) {
     v1[0] += v2[0];
     v1[1] += v2[1];
-    v1[2] += v2[2]; 
+    v1[2] += v2[2];
 }
