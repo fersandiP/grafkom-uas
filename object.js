@@ -32,12 +32,12 @@ var robot = {
 		scale: [1, 0.2, 0.2]
 	},
 	eye1: {
-		rotationY: 0,
+		rotationY: 45,
 		translation: [-0.5, 0.5, 1],
 		scale: [0.1, 0.1, 0.1]
 	},
 	eye2: {
-		rotationY: 0,
+		rotationY: 45,
 		translation: [0.5, 0.5, 1],
 		scale: [0.1, 0.1, 0.1]
 	},
