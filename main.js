@@ -8,6 +8,7 @@ var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0.5, 0.5, -5],
     u_shininess: 20,
+    u_color:[0.2, 0.8, 0.2]
 };
 
 var cameraPosition = [0, 0, -10];
