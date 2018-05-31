@@ -25,12 +25,14 @@ var robot = {
 	hand1: {
 		rotationY: 0,
 		translation: [2, 0, 0],
-		scale: [1, 0.2, 0.2]
+		scale: [1, 0.2, 0.2],
+		objName: 'cylinder'
 	},
 	hand2: {
 		rotationY: 0,
 		translation: [-2, 0, 0],
-		scale: [1, 0.2, 0.2]
+		scale: [1, 0.2, 0.2],
+		objName: 'cylinder'
 	},
 	eye1: {
 		rotationY: 45,
@@ -55,12 +57,14 @@ var robot = {
 	leg1: {
 		rotationY: 0,
 		translation: [-0.7, -1.5, 0],
-		scale: [0.3, 0.5, 0.3]
+		scale: [0.3, 0.5, 0.3],
+		objName: 'cylinder'
 	},
 	leg2: {
 		rotationY: 0,
 		translation: [0.7, -1.5, 0],
-		scale: [0.3, 0.5, 0.3]
+		scale: [0.3, 0.5, 0.3],
+		objName: 'cylinder'
 	},
 
 	hierarchy: [{
@@ -110,14 +114,23 @@ var robot = {
 };
 
 
-var ground = {
+var world = {
 	ground: {
 		rotationY: 0,
 		translation: [0, -3, 2],
-		scale: [2, 0, 100]
+		scale: [4, 0.1, 2000]
+	},
+	wall: {
+		rotationY: 0,
+		translation: [0,0,1989],
+		scale : [2000, 2000, 0.1]
 	},
 	hierarchy: [{
 		name: 'ground',
 		hasChild: false,
+	},
+	{
+		name: 'wall',
+		hasChild: false
 	}]
 }

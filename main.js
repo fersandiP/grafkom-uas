@@ -77,7 +77,7 @@ function render() {
     updateParameter();
     setProjection();
     setCamera();
-    drawObject(ground);
+    drawObject(world);
     drawObject(robot);
     requestAnimationFrame(render);
 }
