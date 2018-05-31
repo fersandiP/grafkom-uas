@@ -39,13 +39,6 @@ window.onload = function () {
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
     gl.clearColor(0.5, 0.5, 0.5, 1.0);
 
-    const fov = 30 * Math.PI / 180;
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    const zNear = 1;
-    const zFar = 2000;
-    const projection = m4.perspective(fov, aspect, zNear, zFar);
-
-    uniforms.u_projectionMatrix = projection;
 
 
     OBJ.downloadMeshes({
@@ -82,7 +75,7 @@ function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     updateParameter();
-
+    setProjection();
     setCamera();
     drawObject(ground);
     drawObject(robot);
@@ -169,6 +162,17 @@ function setCamera() {
     uniforms.u_viewMatrix = view;
     uniforms.u_cameraPosition = cameraPosition;
 
+}
+
+function setProjection() {
+
+    const fov = 30 * Math.PI / 180;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const zNear = 1;
+    const zFar = 2000;
+    const projection = m4.perspective(fov, aspect, zNear, zFar);
+
+    uniforms.u_projectionMatrix = projection;
 }
 
 window.onkeydown = function (event) {
