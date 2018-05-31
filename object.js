@@ -19,7 +19,7 @@ var robot = {
 	head : {
 		rotationY : 0,
 		translation : [0,1.5,0],
-		scale : [1.5, 0.5, 1.5]
+		scale : [1.5, 0.7, 1.5]
 	},
 	hand1 : {
 		rotationY : 0,
@@ -30,6 +30,21 @@ var robot = {
 		rotationY : 0,
 		translation : [-2,0,0],
 		scale : [1,0.2,0.2]
+	},
+	eye1 : {
+		rotationY : 0,
+		translation : [-0.5,0.5,1],
+		scale : [0.1, 0.1, 0.1]
+	},
+	eye2 : {
+		rotationY : 0,
+		translation : [0.5,0.5,1],
+		scale : [0.1, 0.1, 0.1]
+	},
+	nose : {
+		rotationY : 0,
+		translation : [0,0,1],
+		scale : [0.1, 0.1, 0.5]
 	},
 	leg1 : {
 		rotationY : 0,
@@ -48,7 +63,21 @@ var robot = {
 		childs : [
 		{
 			name : 'head',
-			hasChild : false
+			hasChild : true,
+			childs : [
+			{
+				name : 'nose',
+				hasChild : false
+			},
+			{
+				name : 'eye1',
+				hasChild : false,
+			},
+			{
+				name : 'eye2',
+				hasChild : false
+			}
+			]
 		},
 		{
 			name : 'hand1',
