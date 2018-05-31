@@ -92,8 +92,6 @@ function render() {
 
 function updateParameter(){
     parameter.robot.bodyRotationY += 1;
-    console.log(parameter);
-    console.log(robot);
 }
 
 function drawObject(object){
