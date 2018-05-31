@@ -143,7 +143,7 @@ var world = {
 var suzanne = {
 	head: {
 		rotationY: 180,
-		translation: [0, 1.7, 0],
+		translation: [0, 1.3, 0],
 		scale: [2, 1, 2.5],
 		objName: 'suzanne'
 	},
@@ -155,13 +155,13 @@ var suzanne = {
 	},
 	hand1: {
 		rotationY: 0,
-		translation: [2, 0.5, 0],
+		translation: [1.9, 0.5, 0],
 		scale: [1, 0.2, 1],
 		objName: 'sphere'
 	},
 	hand2: {
 		rotationY: 0,
-		translation: [-2, 0.5, 0],
+		translation: [-1.9, 0.5, 0],
 		scale: [1, 0.2, 1],
 		objName: 'sphere'
 	},
