@@ -7,7 +7,7 @@ var gl, programInfo, bufferInfo;
 var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0.5, 0.5, -5],
-    u_shininess: 10,
+    u_shininess: 20,
 };
 
 var cameraPosition = [0, 0, -10];
@@ -37,9 +37,6 @@ window.onload = function () {
 
     gl = document.getElementById("gl-canvas").getContext("webgl");
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-
-    gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
     gl.clearColor(0.5, 0.5, 0.5, 1.0);
 
     const fov = 30 * Math.PI / 180;
@@ -78,9 +75,10 @@ function loadObject(meshes) {
 
 function render() {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     updateParameter();
@@ -131,13 +129,11 @@ function defineModelViewMatrix(object, saveMatrix = false) {
         matrixStack.save(tempMatrix);
     }
 
-    draw(tempMatrix, object.bufferInfo);
+    draw(tempMatrix, object.objName);
 }
 
-function draw(matrix, bufferInfo = null, objName = 'cube',) {
-    if (bufferInfo == null) {
-        bufferInfo = twgl.createBufferInfoFromArrays(gl, obj[objName]);
-    }
+function draw(matrix, objName = 'cube', ) {
+    bufferInfo = chooseShape(objName);
     uniforms.u_modelMatrix = matrix;
     uniforms.u_worldInverseMatrix = m4.transpose(m4.inverse(matrix));
 
@@ -146,6 +142,21 @@ function draw(matrix, bufferInfo = null, objName = 'cube',) {
     twgl.setUniforms(programInfo, uniforms);
 
     gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+}
+
+function chooseShape(objName) {
+    switch (objName) {
+        case 'obj1':
+            return twgl.primitives.createBufferInfoFromArrays(gl, obj['obj1']);
+        case 'obj2':
+            return twgl.primitives.createBufferInfoFromArrays(gl, obj['obj2']);
+        case 'cylinder':
+            return twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 10, 10);
+        case 'sphere':
+            return twgl.primitives.createSphereBufferInfo(gl, 1, 20, 20);
+        default:
+            return twgl.createBufferInfoFromArrays(gl, obj['cube']);
+    }
 }
 
 function setCamera() {

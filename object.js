@@ -12,14 +12,15 @@ var robot = {
 		rotationY() {
 			return parameter.robot.bodyRotationY;
 		},
-		translation: [0, 0, 0],
+		translation: [-3, -2.5, 10],
 		scale: [0.5, 0.7, 0.5],
-		function: ROTATION
+		function: ROTATION,
+		objName:'cylinder',
 	},
 	head: {
 		rotationY: 0,
 		translation: [0, 1.5, 0],
-		scale: [1.5, 0.7, 1.5]
+		scale: [1.5, 0.7, 1.5],
 	},
 	hand1: {
 		rotationY: 0,
@@ -112,7 +113,7 @@ var robot = {
 var ground = {
 	ground: {
 		rotationY: 0,
-		translation: [0, -2, 2],
+		translation: [0, -3, 2],
 		scale: [2, 0, 100]
 	},
 	hierarchy: [{
