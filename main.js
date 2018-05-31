@@ -4,11 +4,13 @@ const vec3 = twgl.vec3;
 
 var gl, programInfo, bufferInfo;
 
+const DEFAULT_COLOR = [0.2, 0.8, 0.2]
+
 var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0.5, 0.5, -5],
     u_shininess: 20,
-    u_color:[0.2, 0.8, 0.2]
+    u_color: DEFAULT_COLOR
 };
 
 var cameraPosition = [0, 0, -10];
@@ -79,7 +81,7 @@ function render() {
     setProjection();
     setCamera();
     drawObject(suzanne);
-    drawObject(ground);
+    drawObject(world);
     drawObject(robot);
     requestAnimationFrame(render);
 }
