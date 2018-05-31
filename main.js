@@ -8,6 +8,7 @@ var drawingMethod = 0;
 const DEFAULT_COLOR = [0.2, 0.8, 0.2];
 const GLOBAL_CAMERA = [0, 0, -20];
 var povCamera = [0, -2, -5];
+var cameraAngel = 0;
 var spotLightTarget = [0, 0, 0];
 
 var textures;
@@ -119,7 +120,7 @@ function updateParameter() {
 
     if (suzanneAction.current_state == suzanneState.S_PUTAR_DEPAN_KANAN ||
         suzanneAction.current_state == suzanneState.S_PUTAR_BELAKANG_KANAN ||
-        suzanneAction.current_state == suzanneState.S_PUTAR_KIRI){
+        suzanneAction.current_state == suzanneState.S_PUTAR_KIRI) {
         parameter.suzanne.rotationY = suzanneAction.action(parameter.suzanne.rotationY);
     } else {
         parameter.suzanne.translation = suzanneAction.action(parameter.suzanne.translation);
@@ -128,6 +129,7 @@ function updateParameter() {
     parameter.planet.rotationX += 2;
     parameter.planet.rotationY -= 2;
     parameter.planet.rotationZ += 2;
+    parameter.walkingGirl.rotate = cameraAngel;
 }
 
 function drawObject(object) {
@@ -197,7 +199,7 @@ function draw(matrix, objName = 'cube', ) {
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
 
-    gl.drawElements((drawingMethod == 0) ? gl.TRIANGLES : gl.LINE_LOOP, 
+    gl.drawElements((drawingMethod == 0) ? gl.TRIANGLES : gl.LINE_LOOP,
         bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 }
 
@@ -227,7 +229,10 @@ function setCameraAndSpotLight() {
     const eye = cameraPosition;
     const target = [cameraPosition[0], 0, cameraPosition[2] + 10];
     const up = [0, 1, 0];
-    const camera = m4.lookAt(eye, target, up);
+    var camera = m4.lookAt(eye, target, up);
+    if(isPov) {
+        camera = m4.rotateY(camera, radians(cameraAngel));
+    }
     const view = m4.inverse(camera);
 
     uniforms.u_viewMatrix = view;
@@ -268,6 +273,12 @@ window.onkeydown = function (event) {
         case 32://space
             isPov ^= true;
             break;
+        case 37://left
+            cameraAngel += 1;
+            break;
+        case 39: //right
+            cameraAngel -= 1;
+            break;
         case 32:
             break;
         case 81:
@@ -277,13 +288,13 @@ window.onkeydown = function (event) {
 }
 
 function initHandler() {
-    document.getElementById("lighting").addEventListener('change',function(){
-        if(this.checked){
+    document.getElementById("lighting").addEventListener('change', function () {
+        if (this.checked) {
             uniforms.u_isSpotLight = 1;
         } else {
             uniforms.u_isSpotLight = 0;
         }
-    },false);
+    }, false);
 }
 
 function radians(degrees) {

@@ -14,6 +14,7 @@ var parameter = {
 	walkingGirl: {
 		translateX: 0,
 		translateZ: -5,
+		rotate: 0,
 	},
 	suzanne: {
 		translation: [5, 0, 20],
@@ -443,14 +444,16 @@ var spinner = {
 
 var walkingGirl = {
 	walkingGirl: {
-		rotationY: 0,
 		translation() {
 			return [parameter.walkingGirl.translateX, -2, parameter.walkingGirl.translateZ]
 		},
 		scale: [1, 1, 1],
 		objName: 'WalkingGirl',
 		color: [1, 0, 0],
-		function: TRANSLATE,
+		rotationY() {
+			return parameter.walkingGirl.rotate;
+		},
+		function: TRANSLATE | ROTATION_Y,
 	},
 	hierarchy: [{
 		name: 'walkingGirl',
