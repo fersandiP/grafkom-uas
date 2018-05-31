@@ -100,6 +100,7 @@ function render() {
     drawObject(world);
     drawObject(robot);
     drawObject(walkingGirl);
+    drawObject(planet);
     requestAnimationFrame(render);
 }
 
@@ -118,8 +119,11 @@ function updateParameter() {
         parameter.suzanne.rotationY = suzanneAction.action(parameter.suzanne.rotationY);
     } else {
         parameter.suzanne.translation = suzanneAction.action(parameter.suzanne.translation);
-
     }
+
+    parameter.planet.rotationX += 2;
+    parameter.planet.rotationY -= 2;
+    parameter.planet.rotationZ += 2;
 }
 
 function drawObject(object) {

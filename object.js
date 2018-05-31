@@ -18,6 +18,12 @@ var parameter = {
 	suzanne: {
 		translation: [5, 0, 20],
 		rotationY: 0
+	},
+	planet: {
+		translation: [0, 2, 10],
+		rotationX: 0,
+		rotationY: 0,
+		rotationZ: 0
 	}
 };
 
@@ -450,4 +456,62 @@ var walkingGirl = {
 		name: 'walkingGirl',
 		hasChild: false,
 	}]
+}
+
+var planet = {
+	orbit: {
+		translation() {
+			return parameter.planet.translation;
+		},
+		rotationX(){
+			return parameter.planet.rotationX;
+		},
+		rotationY(){
+			return parameter.planet.rotationY;
+		},
+		rotationZ(){
+			return parameter.planet.rotationZ;
+		},
+		scale: [0.4,0.4,0.4],
+		objName: "sphere",
+		function : TRANSLATE | ROTATION_Y | ROTATION_X | ROTATION_Z
+	},
+
+	satellite1: {
+		translation: [1.5,1.5,-1.5],
+		scale: [0.3,0.3,0.3],
+		objName: "sphere"
+	},
+	satellite2: {
+		translation: [-1.5,1.5,1.5],
+		scale: [0.3,0.3,0.3],
+		objName: "sphere"
+	},
+
+	satellite3: {
+		translation: [1.5,-1.5,1.5],
+		scale: [0.3,0.3,0.3],
+		objName: "sphere"
+	},
+
+	hierarchy : [
+	{
+		name: 'orbit',
+		hasChild: true,
+		childs : [
+		{
+			name: 'satellite1',
+			hasChild: false
+		},
+		{
+			name: 'satellite2',
+			hasChild: false
+		},
+		{
+			name: 'satellite3',
+			hasChild: false
+		}
+		]
+	}
+	]
 }
