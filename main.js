@@ -9,6 +9,7 @@ const DEFAULT_COLOR = [0.2, 0.8, 0.2];
 const GLOBAL_CAMERA = [0, 0, -20];
 var povCamera = [0, -2, -5];
 var cameraAngel = 0;
+var cameraAngelX = 0;
 var spotLightTarget = [0, 0, 0];
 
 var textures;
@@ -232,6 +233,7 @@ function setCameraAndSpotLight() {
     var camera = m4.lookAt(eye, target, up);
     if(isPov) {
         camera = m4.rotateY(camera, radians(cameraAngel));
+        camera = m4.rotateX(camera, radians(cameraAngelX));
     }
     const view = m4.inverse(camera);
 
@@ -280,7 +282,11 @@ window.onkeydown = function (event) {
         case 39: //right
             cameraAngel -= 1;
             break;
-        case 32:
+        case 38: //up
+            cameraAngelX += 1;
+            break;
+        case 40: //down
+            cameraAngelX -= 1;
             break;
         case 81:
             drawingMethod ^= 1;
