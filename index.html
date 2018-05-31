@@ -84,13 +84,13 @@
         if(pointLighting > 0.0) {
             specular = pow(dot(normal, halfVector), u_shininess);
         }
-
+        if(u_isTexture == 1) {
+            gl_FragColor*=texture2D( u_texture, v_texCoord );
+        }
         gl_FragColor.rgb *= pointLighting;
         gl_FragColor.rgb *= directionalLighting;
         gl_FragColor.rgb += specular;
-        if(u_isTexture == 1) {
-            gl_FragColor*texture2D( u_texture, v_texCoord );
-        }
+ 
     }
     </script>
     <script type="text/javascript" src="vendor/webgl-obj-loader.min.js"></script>

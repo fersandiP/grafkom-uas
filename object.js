@@ -127,7 +127,8 @@ var world = {
 		rotationY: 0,
 		translation: [0,0,1989],
 		scale : [2000, 2000, 0.1],
-		color: [0.2, 0.2, 0.2]
+		color: [0.2, 0.2, 0.2],
+		texture: 'wall',
 	},
 	hierarchy: [{
 		name: 'ground',

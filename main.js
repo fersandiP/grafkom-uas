@@ -141,7 +141,13 @@ function defineModelViewMatrix(object, saveMatrix = false) {
     } else {
         uniforms.u_color = DEFAULT_COLOR;
     }
-
+    
+    if (object.texture != null) {
+        uniforms.u_isTexture = 1;
+        uniforms.u_texture = textures[object.texture];
+    } else {
+        uniforms.u_isTexture = 0;
+    }
 
     if (saveMatrix) {
         matrixStack.save(tempMatrix);
