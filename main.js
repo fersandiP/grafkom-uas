@@ -95,7 +95,12 @@ function render() {
 }
 
 function updateParameter() {
-    parameter.robot.bodyRotationY += 1;
+    if (robotAction.current_state == robotState.S_Z_MAJU ||
+        robotAction.current_state == robotState.S_Z_MUNDUR){
+        parameter.robot.bodyTranslation = robotAction.action(parameter.robot.bodyTranslation);
+    } else {
+        parameter.robot.bodyRotationY = robotAction.action(parameter.robot.bodyRotationY)
+    }
 }
 
 function drawObject(object) {
@@ -225,4 +230,10 @@ window.onkeydown = function (event) {
 
 function radians(degrees) {
     return degrees * Math.PI / 180.0;
+}
+
+function sumVector(v1, v2){
+    v1[0] += v2[0];
+    v1[1] += v2[1];
+    v1[2] += v2[2]; 
 }

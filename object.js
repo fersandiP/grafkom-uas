@@ -5,18 +5,80 @@ const TRANSLATE = 0b1000;
 
 var parameter = {
 	robot: {
-		bodyRotationY: 0
+		bodyRotationY: 0,
+		bodyTranslation: [-5, -2, 12]
 	}
 };
+
+var robotState = {
+	S_Z_MAJU : 0,
+	S_Z_MUNDUR : 1,
+	S_PUTAR_MAJU : 2,
+	S_PUTAR_MUNDUR : 3,
+
+	Z_THRESHOLD : 20,
+	Z_MIN_THRESHOLD : 5
+};
+
+var robotAction = {
+	current_state : robotState.S_Z_MAJU,
+
+	action (data) {
+		switch(this.current_state){
+			case robotState.S_Z_MAJU:
+				data[2] += 0.1;
+				break;
+			case robotState.S_Z_MUNDUR:
+				data[2] -= 0.1;
+				break;
+			case robotState.S_PUTAR_MUNDUR:
+				data = (data + 1) % 360;
+				break;
+			case robotState.S_PUTAR_MAJU:
+				data = (data + 1) % 360;
+				break;
+		}
+
+		this.checkChangeState(data);
+		return data;
+	},
+
+	checkChangeState(data) {
+		switch(this.current_state){
+			case robotState.S_Z_MAJU:
+				if (data[2] >= robotState.Z_THRESHOLD){
+					this.current_state = robotState.S_PUTAR_MUNDUR;
+				}
+				break;
+			case robotState.S_Z_MUNDUR:
+				if (data[2] <= robotState.Z_MIN_THRESHOLD){
+					this.current_state = robotState.S_PUTAR_MAJU;
+				}
+				break;
+			case robotState.S_PUTAR_MUNDUR:
+				if (data == 180){
+					this.current_state = robotState.S_Z_MUNDUR;
+				}
+				break;
+			case robotState.S_PUTAR_MAJU:
+				if (data == 0){
+					this.current_state = robotState.S_Z_MAJU;
+				}
+				break;
+		}
+	}
+}
 
 var robot = {
 	body: {
 		rotationY() {
 			return parameter.robot.bodyRotationY;
 		},
-		translation: [-5, -2, 12],
+		translation () {
+			return parameter.robot.bodyTranslation;
+		},
 		scale: [0.5, 0.7, 0.5],
-		function: ROTATION_Y,
+		function: ROTATION_Y | TRANSLATE,
 		objName: 'cylinder',
 	},
 	head: {
