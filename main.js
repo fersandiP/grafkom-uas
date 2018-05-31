@@ -86,6 +86,7 @@ function render() {
     updateParameter();
 
     setCamera();
+    drawObject(ground);
     drawObject(robot);
     requestAnimationFrame(render);
 }
