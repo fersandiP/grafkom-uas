@@ -178,11 +178,13 @@ var robot = {
 		scale: [0.5, 0.7, 0.5],
 		function: ROTATION_Y | TRANSLATE,
 		objName: 'cylinder',
+		texture: 'texture3'
 	},
 	head: {
 		rotationY: 0,
 		translation: [0, 1.5, 0],
 		scale: [1.5, 0.7, 1.5],
+		texture: 'texture2'
 	},
 	hand1: {
 		rotationY: 0,
@@ -281,7 +283,8 @@ var world = {
 		rotationY: 0,
 		translation: [0, -3, 2],
 		scale: [4, 0.01, 2000],
-		color: [0.1, 0.1, 0.1]
+		color: [1, 1, 1],
+		texture: 'texture4'
 	},
 	wall: {
 		rotationY: 0,
@@ -398,17 +401,23 @@ var spinner = {
 	ring1: {
 		translation: [-10, 0, -10],
 		scale: [10, 10, 10],
-		objName: 'torus'
+		color: [1.0, 1.0, 1.0],
+		objName: 'torus',
+		texture: 'texture4'
 	},
 	ring2: {
 		translation: [10, 0, -10],
 		scale: [10, 10, 10],
+		color: [1.0, 1.0, 1.0],
 		objName: 'torus',
+		texture: 'texture4'
 	},
 	ring3: {
 		translation: [0, 0, 10],
 		scale: [10, 10, 10],
+		color: [1.0, 1.0, 1.0],
 		objName: 'torus',
+		texture: 'texture4'
 	},
 	mid: {
 		rotationX: 90,
@@ -474,7 +483,8 @@ var planet = {
 		},
 		scale: [0.4,0.4,0.4],
 		objName: "sphere",
-		function : TRANSLATE | ROTATION_Y | ROTATION_X | ROTATION_Z
+		function : TRANSLATE | ROTATION_Y | ROTATION_X | ROTATION_Z,
+		texture: 'texture3'
 	},
 
 	satellite1: {

@@ -53,6 +53,15 @@ window.onload = function () {
     textures = twgl.createTextures(gl, {
         wall: {
             src: 'textures/texture2.jpeg',
+        },
+        texture2: {
+            src: 'textures/texture3.jpeg'
+        },
+        texture3: {
+            src: 'textures/texture4.jpg'
+        },
+        texture4: {
+            src: 'textures/texture5.jpg'
         }
     });
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
