@@ -59,7 +59,7 @@ window.onload = function () {
 }
 
 function main() {
-    requestAnimationFrame(render);
+    render();
 }
 
 function loadObject(meshes){    

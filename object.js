@@ -24,12 +24,12 @@ var robot = {
 	hand1 : {
 		rotationY : 0,
 		translation : [2,0,0],
-		scale : [1.7,0.2,0.2]
+		scale : [1,0.2,0.2]
 	}, 
 	hand2 : {
 		rotationY : 0,
 		translation : [-2,0,0],
-		scale : [1.7,0.2,0.2]
+		scale : [1,0.2,0.2]
 	},
 	leg1 : {
 		rotationY : 60,
