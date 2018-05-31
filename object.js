@@ -14,6 +14,10 @@ var parameter = {
 	walkingGirl: {
 		translateX: 0,
 		translateZ: -5,
+	},
+	suzanne: {
+		translation: [5, 0, 20],
+		rotationY: 0
 	}
 };
 
@@ -70,6 +74,87 @@ var robotAction = {
 			case robotState.S_PUTAR_MAJU:
 				if (data == 0){
 					this.current_state = robotState.S_Z_MAJU;
+				}
+				break;
+		}
+	}
+}
+
+var suzanneState = {
+	S_PUTAR_DEPAN_KANAN : 0,
+	S_PUTAR_BELAKANG_KANAN : 1,
+	S_PUTAR_KIRI : 2,
+	S_Z_Y_MAJU : 3,
+	S_Y_KIRI : 4,
+	S_Z_Y_MUNDUR : 5,
+
+	Z_THRESHOLD : 25,
+	Z_MIN_THRESHOLD : 20,
+	X_THRESHOLD : 15,
+	X_MIN_THRESHOLD : 5
+};
+
+var suzanneAction = {
+	current_state : suzanneState.S_Z_MAJU,
+
+	action (data) {
+		switch(this.current_state){
+			case suzanneState.S_PUTAR_DEPAN_KANAN:
+				data = (data - 1) % 360;
+				break;
+			case suzanneState.S_Z_Y_MAJU:
+				data[2] += 0.1;
+				data[0] += 0.1;
+				break;
+			case suzanneState.S_PUTAR_BELAKANG_KANAN:
+				data = (data - 1) % 360;
+				break;
+			case suzanneState.S_Z_Y_MUNDUR:
+				data[2] -= 0.1;
+				data[0] += 0.1;
+				break;
+			case suzanneState.S_PUTAR_KIRI:
+				data = (data - 1) % 360;
+				break;
+			case suzanne.S_Y_KIRI:
+				data[0] -= 0.1;
+				break;
+		}
+
+		this.checkChangeState(data);
+		return data;
+	},
+
+	checkChangeState(data) {
+		switch(this.current_state){
+			case suzanneState.S_PUTAR_DEPAN_KANAN:
+				if (-data == 45){
+					this.current_state = suzanneState.S_Z_Y_MAJU;
+				}
+				break;
+			case suzanneState.S_Z_Y_MAJU:
+				if (data[2] >= suzanneState.Z_THRESHOLD){
+					this.current_state = suzanneState.S_PUTAR_BELAKANG_KANAN;
+				}
+				break;
+			case suzanneState.S_PUTAR_BELAKANG_KANAN:
+				if (-data == 135){
+					this.current_state = suzanneState.S_Z_Y_MUNDUR;
+				}
+				break;
+			case suzanneState.S_Z_Y_MUNDUR:
+				if (data[0] >= suzanneState.X_THRESHOLD){
+					this.current_state = suzanneState.S_PUTAR_KIRI;
+				}
+				break;
+			case suzanneState.S_PUTAR_KIRI:
+				if (-data == 270){
+					this.current_state = suzanneState.S_Y_KIRI;
+				}
+				break;
+			case suzanne.S_Y_KIRI:
+				if (data[0] <= suzanneState.X_MIN_THRESHOLD){
+					this.current_state = suzanneState.S_PUTAR_DEPAN_KANAN;
 				}
 				break;
 		}
@@ -221,11 +306,16 @@ var suzanne = {
 		function: ROTATION_Y,
 	},
 	body: {
-		rotationY: 0,
-		translation: [5, 0, 20],
+		rotationY (){
+			return parameter.suzanne.rotationY;
+		},
+		translation() {
+			return parameter.suzanne.translation;
+		},
 		scale: [1, 2, 1],
 		color: [0.545, 0.27, 0.07],
-		objName: 'cylinder'
+		objName: 'cylinder',
+		function : TRANSLATE | ROTATION_Y
 	},
 	hand1: {
 		rotationY: 0,
