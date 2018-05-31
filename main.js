@@ -3,6 +3,7 @@ const m4 = twgl.m4;
 const vec3 = twgl.vec3;
 
 var gl, programInfo, bufferInfo;
+var drawingMethod = 0;
 
 const DEFAULT_COLOR = [0.2, 0.8, 0.2];
 const GLOBAL_CAMERA = [0, 0, -20];
@@ -102,6 +103,7 @@ function render() {
     drawObject(world);
     drawObject(robot);
     drawObject(walkingGirl);
+    drawObject(planet);
     requestAnimationFrame(render);
 }
 
@@ -113,6 +115,18 @@ function updateParameter() {
         parameter.robot.bodyRotationY = robotAction.action(parameter.robot.bodyRotationY)
     }
     parameter.spinner.rotation += 1;
+
+    if (suzanneAction.current_state == suzanneState.S_PUTAR_DEPAN_KANAN ||
+        suzanneAction.current_state == suzanneState.S_PUTAR_BELAKANG_KANAN ||
+        suzanneAction.current_state == suzanneState.S_PUTAR_KIRI){
+        parameter.suzanne.rotationY = suzanneAction.action(parameter.suzanne.rotationY);
+    } else {
+        parameter.suzanne.translation = suzanneAction.action(parameter.suzanne.translation);
+    }
+
+    parameter.planet.rotationX += 2;
+    parameter.planet.rotationY -= 2;
+    parameter.planet.rotationZ += 2;
 }
 
 function drawObject(object) {
@@ -182,7 +196,8 @@ function draw(matrix, objName = 'cube', ) {
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
 
-    gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements((drawingMethod == 0) ? gl.TRIANGLES : gl.LINE_LOOP, 
+        bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 }
 
 function chooseShape(objName) {
@@ -253,6 +268,9 @@ window.onkeydown = function (event) {
             isPov ^= true;
             break;
         case 32:
+            break;
+        case 81:
+            drawingMethod ^= 1;
             break;
     }
 }
