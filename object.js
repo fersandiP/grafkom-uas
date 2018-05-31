@@ -9,6 +9,10 @@ var parameter = {
 	},
 	spinner: {
 		rotation: 0
+	},
+	walkingGirl: {
+		translateX: 0,
+		translateZ: -5,
 	}
 };
 
@@ -128,7 +132,7 @@ var world = {
 	},
 	wall: {
 		rotationY: 0,
-		translation: [0, 0, 1989],
+		translation: [0, 0, 1200],
 		scale: [2000, 2000, 0.1],
 		color: [0.2, 0.2, 0.2],
 		texture: 'wall',
@@ -244,7 +248,7 @@ var spinner = {
 		rotationY() {
 			return parameter.spinner.rotation;
 		},
-		translation: [0, 0, 0],
+		translation: [0, 0, 10],
 		scale: [0.025, 0.025, 0.025],
 		objName: 'sphere',
 		function: ROTATION_Y,
@@ -273,10 +277,13 @@ var spinner = {
 var walkingGirl = {
 	walkingGirl: {
 		rotationY: 0,
-		translation: [0, -2, -5],
+		translation() {
+			return [parameter.walkingGirl.translateX, -2, parameter.walkingGirl.translateZ]
+		},
 		scale: [1, 1, 1],
 		objName: 'WalkingGirl',
-		color: [1, 0, 0]
+		color: [1, 0, 0],
+		function: TRANSLATE,
 	},
 	hierarchy: [{
 		name: 'walkingGirl',
