@@ -288,7 +288,7 @@ window.onkeydown = function (event) {
         case 40: //down
             cameraAngelX -= 1;
             break;
-        case 81:
+        case 81://q
             drawingMethod ^= 1;
             break;
     }
