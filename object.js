@@ -1,6 +1,6 @@
 const ROTATION_X = 0b1;
 const ROTATION_Y = 0b10;
-const ROTAITON_Z = 0b100
+const ROTATION_Z = 0b100
 const TRANSLATE = 0b1000;
 
 var parameter = {
