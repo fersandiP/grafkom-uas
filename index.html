@@ -14,6 +14,8 @@
     <canvas id="gl-canvas">
         Oops ... your browser doesn't support the HTML5 canvas element
     </canvas>
+    <label for="lighting">Spot Lighting</label>
+    <input id="lighting" type="checkbox">
 
 
     <script id="vs" type="x-shader/x-vertex">
@@ -67,6 +69,7 @@
 
     uniform float u_shininess;
     uniform int u_isTexture;
+    uniform int u_isSpotLight;
     uniform sampler2D u_texture;
     uniform vec3 u_spotLightDirection;
     uniform float u_spotLightLimit;
@@ -107,11 +110,14 @@
         if(u_isTexture == 1) {
             gl_FragColor*=texture2D( u_texture, v_texCoord );
         }
+        if(u_isSpotLight == 1) {
+            gl_FragColor.rgb *= spotLighting;
+            gl_FragColor.rgb += specularSpotLight;
+            return;
+        }
         gl_FragColor.rgb *= pointLighting;
         gl_FragColor.rgb *= directionalLighting;
-        //gl_FragColor.rgb *= spotLighting;
         gl_FragColor.rgb += specular;
-        //gl_FragColor.rgb += specularSpotLight;
  
     }
     </script>

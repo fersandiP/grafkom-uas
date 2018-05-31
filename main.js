@@ -70,6 +70,7 @@ window.onload = function () {
 }
 
 function main() {
+    initHandler();
     render();
 }
 
@@ -273,6 +274,16 @@ window.onkeydown = function (event) {
             drawingMethod ^= 1;
             break;
     }
+}
+
+function initHandler() {
+    document.getElementById("lighting").addEventListener('change',function(){
+        if(this.checked){
+            uniforms.u_isSpotLight = 1;
+        } else {
+            uniforms.u_isSpotLight = 0;
+        }
+    },false);
 }
 
 function radians(degrees) {
