@@ -40,7 +40,7 @@ var obj = {
 }
 
 var settings = {
-    speed: 0.1,
+    speed: 0.5,
 }
 
 
