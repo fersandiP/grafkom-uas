@@ -121,6 +121,12 @@ function defineModelViewMatrix(object, saveMatrix = false) {
     tempMatrix = m4.multiply(tempMatrix, m4.translation(translate));
     tempMatrix = m4.multiply(tempMatrix, m4.rotationY(radians(rotation)));
     tempMatrix = m4.multiply(tempMatrix, m4.scaling(object.scale));
+    if(object.color != null) {
+        uniforms.u_color = object.color;
+    } else {
+        uniforms.u_color = DEFAULT_COLOR;
+    }
+    
 
     if (saveMatrix) {
         matrixStack.save(tempMatrix);
