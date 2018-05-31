@@ -5,6 +5,8 @@ const vec3 = twgl.vec3;
 var gl, programInfo, bufferInfo;
 
 const DEFAULT_COLOR = [0.2, 0.8, 0.2];
+const GLOBAL_CAMERA = [0, 0, -15];
+var povCamera = [0, -2, -5];
 
 var textures;
 var uniforms = {
@@ -14,6 +16,8 @@ var uniforms = {
     u_color: DEFAULT_COLOR,
     u_isTexture: 0,
 };
+
+var isPov = false;
 
 var cameraPosition = [0, 0, -10];
 
@@ -31,7 +35,7 @@ var obj = {
 }
 
 var settings = {
-    speed: 0.5
+    speed: 0.1,
 }
 
 
@@ -44,7 +48,7 @@ window.onload = function () {
     gl = document.getElementById("gl-canvas").getContext("webgl");
     textures = twgl.createTextures(gl, {
         wall: {
-            src: 'textures/wall.gif',
+            src: 'textures/texture2.jpeg',
         }
     });
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
@@ -53,8 +57,10 @@ window.onload = function () {
 
 
     OBJ.downloadMeshes({
-        obj1: 'assets/WalkingGirl.obj',
+        obj1: 'assets/WalkingGirl.obj', 
+        //source: //https://github.com/tado/CC4p52b6/blob/master/src/myAssets/Models/WalkingGirl/WalkingGirl.obj
         obj2: 'assets/suzanne.obj'
+        //source: webgl-obj-loader
     }, loadObject);
 
 }
@@ -89,8 +95,10 @@ function render() {
     setProjection();
     setCamera();
     drawObject(suzanne);
+    drawObject(spinner);
     drawObject(world);
     drawObject(robot);
+    drawObject(walkingGirl);
     requestAnimationFrame(render);
 }
 
@@ -101,6 +109,7 @@ function updateParameter() {
     } else {
         parameter.robot.bodyRotationY = robotAction.action(parameter.robot.bodyRotationY)
     }
+    parameter.spinner.rotation += 1;
 }
 
 function drawObject(object) {
@@ -183,12 +192,19 @@ function chooseShape(objName) {
             return twgl.primitives.createCylinderBufferInfo(gl, 1, 2, 10, 10);
         case 'sphere':
             return twgl.primitives.createSphereBufferInfo(gl, 1, 20, 20);
+        case 'torus':
+            return twgl.primitives.createTorusBufferInfo(gl, 1, 0.35, 50, 50);
         default:
             return twgl.createBufferInfoFromArrays(gl, obj['cube']);
     }
 }
 
 function setCamera() {
+    if(isPov) {
+        cameraPosition = povCamera;
+    } else {
+        cameraPosition = GLOBAL_CAMERA;
+    }
     const eye = cameraPosition;
     const target = [cameraPosition[0], 0, cameraPosition[2] + 10];
     const up = [0, 1, 0];
@@ -213,17 +229,24 @@ function setProjection() {
 
 window.onkeydown = function (event) {
     switch (event.keyCode) {
-        case 65:
-            cameraPosition[0] += settings.speed;
+        case 65://a
+            povCamera[0] += settings.speed;
+            parameter.walkingGirl.translateX+=settings.speed;
             break;
-        case 68:
-            cameraPosition[0] -= settings.speed;
+        case 68://d
+            povCamera[0] -= settings.speed;
+            parameter.walkingGirl.translateX-=settings.speed;
             break;
-        case 87:
-            cameraPosition[2] += settings.speed;
+        case 87://w
+            povCamera[2] += settings.speed;
+            parameter.walkingGirl.translateZ+=settings.speed;
             break;
-        case 83:
-            cameraPosition[2] -= settings.speed;
+        case 83://s
+            povCamera[2] -= settings.speed;
+            parameter.walkingGirl.translateZ-=settings.speed;
+            break;
+        case 32://space
+            isPov^=true;
             break;
     }
 }
