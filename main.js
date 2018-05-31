@@ -64,6 +64,9 @@ window.onload = function () {
         },
         texture4: {
             src: 'textures/texture5.jpg'
+        },
+        texture5: {
+            src: 'textures/texture6.jpg'
         }
     });
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);

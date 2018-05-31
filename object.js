@@ -185,7 +185,7 @@ var robot = {
 		rotationY: 0,
 		translation: [0, 1.5, 0],
 		scale: [1.5, 0.7, 1.5],
-		texture: 'texture2'
+		texture: 'texture5'
 	},
 	hand1: {
 		rotationY: 0,
@@ -314,6 +314,7 @@ var suzanne = {
 		color: [0.545, 0.27, 0.07],
 		objName: 'suzanne',
 		function: ROTATION_Y,
+		texture: 'texture5'
 	},
 	body: {
 		rotationY (){
@@ -325,7 +326,8 @@ var suzanne = {
 		scale: [1, 2, 1],
 		color: [0.545, 0.27, 0.07],
 		objName: 'cylinder',
-		function : TRANSLATE | ROTATION_Y
+		function : TRANSLATE | ROTATION_Y,
+		texture: 'texture4'
 	},
 	hand1: {
 		rotationY: 0,
@@ -463,6 +465,7 @@ var walkingGirl = {
 			return parameter.walkingGirl.rotate;
 		},
 		function: TRANSLATE | ROTATION_Y,
+		texture: 'texture2'
 	},
 	hierarchy: [{
 		name: 'walkingGirl',
