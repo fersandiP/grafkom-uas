@@ -15,7 +15,7 @@ var textures;
 var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0, 0, -10],
-    u_spotLightPosition: [0, 0, -30],
+    u_spotLightPosition: [0, 0, 0],
     u_spotLightLimit: Math.cos(radians(10)),
     u_shininess: 10,
     u_color: DEFAULT_COLOR,
@@ -237,6 +237,7 @@ function setCameraAndSpotLight() {
 
     uniforms.u_viewMatrix = view;
     uniforms.u_cameraPosition = cameraPosition;
+    uniforms.u_spotLightPosition = eye;
     uniforms.u_spotLightDirection = [-camera[8], -camera[9], -camera[10]];
 
 }
