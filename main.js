@@ -4,13 +4,15 @@ const vec3 = twgl.vec3;
 
 var gl, programInfo, bufferInfo;
 
-const DEFAULT_COLOR = [0.2, 0.8, 0.2]
+const DEFAULT_COLOR = [0.2, 0.8, 0.2];
 
+var textures;
 var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0.5, 0.5, -5],
     u_shininess: 20,
-    u_color: DEFAULT_COLOR
+    u_color: DEFAULT_COLOR,
+    u_isTexture: 0,
 };
 
 var cameraPosition = [0, 0, -10];
@@ -32,6 +34,7 @@ var settings = {
     speed: 0.5
 }
 
+
 window.onload = function () {
     twgl.setDefaults({
         attribPrefix: "a_",
@@ -39,6 +42,11 @@ window.onload = function () {
     })
 
     gl = document.getElementById("gl-canvas").getContext("webgl");
+    textures = twgl.createTextures(gl, {
+        wall: {
+            src:'textures/wall.gif'
+        }
+    });
     programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
     gl.clearColor(0.5, 0.5, 0.5, 1.0);
 
@@ -59,12 +67,12 @@ function loadObject(meshes) {
     obj.obj1.indices = meshes.obj1.indices;
     obj.obj1.position = meshes.obj1.vertices;
     obj.obj1.normal = meshes.obj1.vertexNormals;
-    // obj.obj1.texcoord  = meshes.obj1.textures;
+    obj.obj1.texcoord  = meshes.obj1.vertices.slice(0,meshes.obj1.vertices.length/3*2)
 
     obj.obj2.indices = meshes.obj2.indices;
     obj.obj2.position = meshes.obj2.vertices;
     obj.obj2.normal = meshes.obj2.vertexNormals;
-    // obj.obj2.texcoord  = meshes.obj2.textures;
+    obj.obj2.texcoord  = meshes.obj2.vertices.slice(0,meshes.obj2.vertices.length/3*2)
 
     main();
 }
@@ -121,12 +129,12 @@ function defineModelViewMatrix(object, saveMatrix = false) {
     tempMatrix = m4.multiply(tempMatrix, m4.translation(translate));
     tempMatrix = m4.multiply(tempMatrix, m4.rotationY(radians(rotation)));
     tempMatrix = m4.multiply(tempMatrix, m4.scaling(object.scale));
-    if(object.color != null) {
+    if (object.color != null) {
         uniforms.u_color = object.color;
     } else {
         uniforms.u_color = DEFAULT_COLOR;
     }
-    
+
 
     if (saveMatrix) {
         matrixStack.save(tempMatrix);

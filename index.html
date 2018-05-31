@@ -25,6 +25,7 @@
     varying vec3 v_normal;
     varying vec3 v_surfaceToLight;
     varying vec3 v_surfaceToCamera;
+    varying vec2 v_texCoord;
 
     uniform mat4 u_modelMatrix;
     uniform mat4 u_viewMatrix;
@@ -43,6 +44,8 @@
         vec3 surfaceWorldPosition = (u_modelMatrix * a_position).xyz;
         v_surfaceToLight = u_lightPosition - surfaceWorldPosition;
         v_surfaceToCamera = u_cameraPosition - surfaceWorldPosition;
+        v_texCoord = a_texcoord;
+
     }
     </script>
 
@@ -54,10 +57,13 @@
     varying vec3 v_normal;
     varying vec3 v_surfaceToLight;
     varying vec3 v_surfaceToCamera;
+    varying vec2 v_texCoord;
 
     uniform vec3 u_lightDirection;
 
     uniform float u_shininess;
+    uniform int u_isTexture;
+    uniform sampler2D u_texture;
 
     void main()
     {
@@ -82,6 +88,9 @@
         gl_FragColor.rgb *= pointLighting;
         gl_FragColor.rgb *= directionalLighting;
         gl_FragColor.rgb += specular;
+        if(u_isTexture == 1) {
+            gl_FragColor*texture2D( u_texture, v_texCoord );
+        }
     }
     </script>
     <script type="text/javascript" src="vendor/webgl-obj-loader.min.js"></script>
