@@ -32,14 +32,14 @@ var robot = {
 		scale : [1,0.2,0.2]
 	},
 	leg1 : {
-		rotationY : 60,
-		translation : [0,0,0],
-		scale : [0.5, 1, 1]
+		rotationY : 0,
+		translation : [-0.7,-1.5,0],
+		scale : [0.3, 0.5, 0.3]
 	},
 	leg2 : {
-		rotationY : 60,
-		translation : [0,0,0],
-		scale : [0.5, 1, 1]
+		rotationY : 0,
+		translation : [0.7,-1.5,0],
+		scale : [0.3, 0.5, 0.3]
 	},
 
 	hierarchy : [{
@@ -57,7 +57,15 @@ var robot = {
 		{
 			name : 'hand2',
 			hasChild : false
-		}
+		},
+		{
+			name : 'leg1',
+			hasChild : false
+		},
+		{
+			name : 'leg2',
+			hasChild : false
+		}	
 		]
 	}],
 };
