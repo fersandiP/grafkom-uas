@@ -1,8 +1,20 @@
+const ROTATION = 0b1;
+const TRANSLATE = 0b10;
+
+var parameter = {
+	robot : {
+		bodyRotationY : 0
+	}
+};
+
 var robot = {
 	body : {
-		rotationY : 0,
+		rotationY () {
+			return parameter.robot.bodyRotationY;
+		},
 		translation : [0,0,0],
-		scale : [0.5, 1, 1]
+		scale : [0.5, 0.7, 0.5],
+		function : ROTATION
 	},
 	head : {
 		rotationY : 0,
@@ -47,5 +59,5 @@ var robot = {
 			hasChild : false
 		}
 		]
-	}]
+	}],
 };

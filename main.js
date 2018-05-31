@@ -76,17 +76,24 @@ function loadObject(meshes){
     main();
 }
 
-function render(time) {
-    time *= 0.001;
+function render() {
     twgl.resizeCanvasToDisplaySize(gl.canvas);
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+    updateParameter();
+
     setCamera();
     drawObject(robot);
     requestAnimationFrame(render);
+}
+
+function updateParameter(){
+    parameter.robot.bodyRotationY += 1;
+    console.log(parameter);
+    console.log(robot);
 }
 
 function drawObject(object){
@@ -108,9 +115,17 @@ function drawObjectHelper(object, hierarchy){
 
 function defineModelViewMatrix(object, saveMatrix=false){
     let tempMatrix = matrixStack.getCurrentMatrix();
+
+    let translate = object.translation;
+    let rotation = object.rotationY;
+
+    if (object.function != null){
+        if ((object.function & ROTATION) != 0) rotation = rotation();
+        if ((object.function & TRANSLATE) != 0) translate = translate();
+    }
     
-    tempMatrix = m4.multiply(tempMatrix, m4.translation(object.translation));
-    tempMatrix = m4.multiply(tempMatrix, m4.rotationY(radians(object.rotationY)));
+    tempMatrix = m4.multiply(tempMatrix, m4.translation(translate));
+    tempMatrix = m4.multiply(tempMatrix, m4.rotationY(radians(rotation)));
     tempMatrix = m4.multiply(tempMatrix, m4.scaling(object.scale));
 
     if (saveMatrix){
