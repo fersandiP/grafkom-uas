@@ -8,13 +8,15 @@ var drawingMethod = 0;
 const DEFAULT_COLOR = [0.2, 0.8, 0.2];
 const GLOBAL_CAMERA = [0, 0, -20];
 var povCamera = [0, -2, -5];
+var cameraAngel = 0;
+var cameraAngelX = 0;
 var spotLightTarget = [0, 0, 0];
 
 var textures;
 var uniforms = {
     u_lightDirection: [0.0, 0.5, -0.5],
     u_lightPosition: [0, 0, -10],
-    u_spotLightPosition: [0, 0, -30],
+    u_spotLightPosition: [0, 0, 0],
     u_spotLightLimit: Math.cos(radians(10)),
     u_shininess: 10,
     u_color: DEFAULT_COLOR,
@@ -39,7 +41,7 @@ var obj = {
 }
 
 var settings = {
-    speed: 0.1,
+    speed: 0.5,
 }
 
 
@@ -128,7 +130,7 @@ function updateParameter() {
 
     if (suzanneAction.current_state == suzanneState.S_PUTAR_DEPAN_KANAN ||
         suzanneAction.current_state == suzanneState.S_PUTAR_BELAKANG_KANAN ||
-        suzanneAction.current_state == suzanneState.S_PUTAR_KIRI){
+        suzanneAction.current_state == suzanneState.S_PUTAR_KIRI) {
         parameter.suzanne.rotationY = suzanneAction.action(parameter.suzanne.rotationY);
     } else {
         parameter.suzanne.translation = suzanneAction.action(parameter.suzanne.translation);
@@ -137,6 +139,7 @@ function updateParameter() {
     parameter.planet.rotationX += 2;
     parameter.planet.rotationY -= 2;
     parameter.planet.rotationZ += 2;
+    parameter.walkingGirl.rotate = cameraAngel;
 }
 
 function drawObject(object) {
@@ -206,7 +209,7 @@ function draw(matrix, objName = 'cube', ) {
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
     twgl.setUniforms(programInfo, uniforms);
 
-    gl.drawElements((drawingMethod == 0) ? gl.TRIANGLES : gl.LINE_LOOP, 
+    gl.drawElements((drawingMethod == 0) ? gl.TRIANGLES : gl.LINE_LOOP,
         bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 }
 
@@ -236,11 +239,16 @@ function setCameraAndSpotLight() {
     const eye = cameraPosition;
     const target = [cameraPosition[0], 0, cameraPosition[2] + 10];
     const up = [0, 1, 0];
-    const camera = m4.lookAt(eye, target, up);
+    var camera = m4.lookAt(eye, target, up);
+    if(isPov) {
+        camera = m4.rotateY(camera, radians(cameraAngel));
+        camera = m4.rotateX(camera, radians(cameraAngelX));
+    }
     const view = m4.inverse(camera);
 
     uniforms.u_viewMatrix = view;
     uniforms.u_cameraPosition = cameraPosition;
+    uniforms.u_spotLightPosition = eye;
     uniforms.u_spotLightDirection = [-camera[8], -camera[9], -camera[10]];
 
 }
@@ -277,22 +285,32 @@ window.onkeydown = function (event) {
         case 32://space
             isPov ^= true;
             break;
-        case 32:
+        case 37://left
+            cameraAngel += 1;
             break;
-        case 81:
+        case 39: //right
+            cameraAngel -= 1;
+            break;
+        case 38: //up
+            cameraAngelX += 1;
+            break;
+        case 40: //down
+            cameraAngelX -= 1;
+            break;
+        case 81://q
             drawingMethod ^= 1;
             break;
     }
 }
 
 function initHandler() {
-    document.getElementById("lighting").addEventListener('change',function(){
-        if(this.checked){
+    document.getElementById("lighting").addEventListener('change', function () {
+        if (this.checked) {
             uniforms.u_isSpotLight = 1;
         } else {
             uniforms.u_isSpotLight = 0;
         }
-    },false);
+    }, false);
 }
 
 function radians(degrees) {
