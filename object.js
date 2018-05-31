@@ -211,40 +211,49 @@ var world = {
 
 var suzanne = {
 	head: {
-		rotationY: 180,
+		rotationY() {
+			return parameter.spinner.rotation;
+		},
 		translation: [0, 1.3, 0],
 		scale: [2, 1, 2.5],
-		objName: 'suzanne'
+		color: [0.545, 0.27, 0.07],
+		objName: 'suzanne',
+		function: ROTATION_Y,
 	},
 	body: {
 		rotationY: 0,
 		translation: [5, 0, 20],
 		scale: [1, 2, 1],
-		objName: 'cube'
+		color: [0.545, 0.27, 0.07],
+		objName: 'cylinder'
 	},
 	hand1: {
 		rotationY: 0,
 		translation: [1.9, 0.5, 0],
 		scale: [1, 0.2, 1],
-		objName: 'sphere'
+		objName: 'sphere',
+		color: [0.545, 0.27, 0.07],
 	},
 	hand2: {
 		rotationY: 0,
 		translation: [-1.9, 0.5, 0],
 		scale: [1, 0.2, 1],
-		objName: 'sphere'
+		objName: 'sphere',
+		color: [0.545, 0.27, 0.07],
 	},
 	leg1: {
 		rotationY: 0,
 		translation: [-0.7, -1.5, 0],
 		scale: [0.3, 0.5, 0.3],
-		objName: 'sphere'
+		objName: 'sphere',
+		color: [0.545, 0.27, 0.07],
 	},
 	leg2: {
 		rotationY: 0,
 		translation: [0.7, -1.5, 0],
 		scale: [0.3, 0.5, 0.3],
-		objName: 'sphere'
+		objName: 'sphere',
+		color: [0.545, 0.27, 0.07],
 	},
 	hierarchy: [{
 		name: 'body',
